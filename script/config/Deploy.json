@@ -1,6 +1,6 @@
 {
-  "contractAddress": "0x8C51b83EbDc7fEBB31b129db14151178067c18c7",
+  "contractAddress": "0x3f5203229894d3ff3D06c04f51605a418031F139",
   "rpcUrl": "https://dev-api.zilliqa.com",
   "kusdAddress": "0xaD581eC62eA08831c8FE2Cd7A1113473fE40A057",
-  "usdcAddress": "0x1fD09F6701a1852132A649fe9D07F2A3b991eCfA"
+  "usdcAddress": "0x991cf9F2B5FDE8F7895e90799aB25bc226EfceC8"
 }
