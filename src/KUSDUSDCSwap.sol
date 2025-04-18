@@ -5,12 +5,13 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/Pausable.sol";
 
 /**
  * @title KUSDUSDCSwap
  * @dev Contract for swapping between KUSD and USDC tokens
  */
-contract KUSDUSDCSwap is Ownable, ReentrancyGuard {
+contract KUSDUSDCSwap is Ownable, ReentrancyGuard, Pausable {
     using SafeERC20 for IERC20;
     
     IERC20 public kusd;
@@ -42,7 +43,7 @@ contract KUSDUSDCSwap is Ownable, ReentrancyGuard {
      * @notice Swap KUSD for USDC
      * @param amount Amount of KUSD to swap
      */
-    function swapKUSDforUSDC(uint256 amount) external nonReentrant {
+    function swapKUSDforUSDC(uint256 amount) external nonReentrant whenNotPaused {
         require(amount > 0, "Amount must be greater than 0");
         
         // Calculate output amount based on exchange rate
@@ -67,7 +68,7 @@ contract KUSDUSDCSwap is Ownable, ReentrancyGuard {
      * @notice Swap USDC for KUSD
      * @param amount Amount of USDC to swap
      */
-    function swapUSDCforKUSD(uint256 amount) external nonReentrant {
+    function swapUSDCforKUSD(uint256 amount) external nonReentrant whenNotPaused {
         require(amount > 0, "Amount must be greater than 0");
         
         // Calculate output amount based on exchange rate
@@ -131,11 +132,20 @@ contract KUSDUSDCSwap is Ownable, ReentrancyGuard {
     }
     
     /**
-     * @notice Withdraw tokens from the contract (emergency use only)
+     * @notice Withdraw tokens from the contract (used for rebalancing tokens)
      * @param token Address of the token to withdraw
      * @param amount Amount to withdraw
      */
     function withdrawTokens(address token, uint256 amount) external onlyOwner {
         IERC20(token).safeTransfer(owner(), amount);
+    }
+
+    // Add pause/unpause functions
+    function pause() external onlyOwner {
+        _pause();
+    }
+
+    function unpause() external onlyOwner {
+        _unpause();
     }
 } 

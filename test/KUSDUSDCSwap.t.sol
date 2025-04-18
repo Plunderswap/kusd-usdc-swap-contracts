@@ -326,4 +326,46 @@ contract KUSDUSDCSwapTest is Test {
         
         vm.stopPrank();
     }
+    
+    /**
+     * @notice Test pause and unpause functionality
+     */
+    function testPauseAndUnpause() public {
+        // Only owner can pause
+        vm.prank(owner);
+        swapContract.pause();
+        
+        // Check that contract is paused
+        assertTrue(swapContract.paused(), "Contract should be paused");
+        
+        // Try to swap while paused (should fail)
+        vm.startPrank(user);
+        kusd.approve(address(swapContract), SWAP_AMOUNT);
+        
+        vm.expectRevert(abi.encodeWithSignature("EnforcedPause()"));
+        swapContract.swapKUSDforUSDC(SWAP_AMOUNT);
+        vm.stopPrank();
+        
+        // Unpause as owner
+        vm.prank(owner);
+        swapContract.unpause();
+        
+        // Check that contract is unpaused
+        assertFalse(swapContract.paused(), "Contract should not be paused");
+        
+        // Try to swap after unpausing (should succeed)
+        vm.startPrank(user);
+        swapContract.swapKUSDforUSDC(SWAP_AMOUNT);
+        vm.stopPrank();
+    }
+    
+    /**
+     * @notice Test that non-owner cannot pause the contract
+     */
+    function testNonOwnerCannotPause() public {
+        // Non-owner tries to pause (should revert)
+        vm.prank(user);
+        vm.expectRevert();
+        swapContract.pause();
+    }
 } 

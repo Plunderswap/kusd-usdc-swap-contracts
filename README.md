@@ -21,7 +21,8 @@ The KUSDUSDCSwap contract provides a simple and secure way to swap between KUSD 
 - **Exchange Rate Management**: Configurable exchange rate that can be updated by the owner
 - **Fee Collection**: Fees are collected on each swap and can be withdrawn by the owner
 - **Security Measures**: Uses OpenZeppelin's ReentrancyGuard and SafeERC20
-- **Emergency Withdrawal**: Owner can withdraw tokens in case of emergencies or to rebalance token amounts.
+- **Owner Withdrawal**: Owner can withdraw tokens in case of emergencies or to rebalance token amounts.
+- **Emergency Pause**: Owner can pause all swap operations in case of emergencies
 
 ### Functions
 
@@ -33,6 +34,8 @@ The KUSDUSDCSwap contract provides a simple and secure way to swap between KUSD 
 | `setFeeRate(uint256 newFeeRate)` | Update the fee rate | Owner Only |
 | `withdrawFees(address token)` | Withdraw collected fees | Owner Only |
 | `withdrawTokens(address token, uint256 amount)` | Emergency token withdrawal | Owner Only |
+| `pause()` | Pause all swap operations | Owner Only |
+| `unpause()` | Resume swap operations | Owner Only |
 
 ### Events
 
@@ -42,6 +45,8 @@ The KUSDUSDCSwap contract provides a simple and secure way to swap between KUSD 
 | `ExchangeRateUpdated(uint256 newRate)` | Emitted when the exchange rate is updated |
 | `FeeRateUpdated(uint256 newFeeRate)` | Emitted when the fee rate is updated |
 | `FeesWithdrawn(address indexed token, uint256 amount)` | Emitted when fees are withdrawn |
+| `Paused(address account)` | Emitted when the contract is paused |
+| `Unpaused(address account)` | Emitted when the contract is unpaused |
 
 ### State Variables
 
@@ -70,6 +75,8 @@ The contract uses OpenZeppelin's Ownable contract for access control:
 - **SafeERC20**: The contract uses OpenZeppelin's SafeERC20 to ensure compatibility with tokens that don't strictly follow the ERC20 standard.
 
 - **Reentrancy Protection**: All swap functions are protected against reentrancy attacks using OpenZeppelin's ReentrancyGuard.
+
+- **Pause Mechanism**: The contract can be paused by the owner in case of emergencies, which halts all swap operations until the contract is unpaused.
 
 - **Token Flow**:
   - When swapping KUSD for USDC, the contract takes KUSD from the user and sends USDC to the user
@@ -107,10 +114,12 @@ forge test
 ```
 
 The test suite includes tests for:
+
 - Basic swap functionality in both directions
 - Exchange rate updates
 - Fee collection and withdrawal
 - Error handling for insufficient tokens, approvals, and balances
+- Pause and unpause functionality
 
 ## Deployment
 
