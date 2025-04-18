@@ -131,3 +131,11 @@ forge script script/DeployKUSDUSDCSwap.s.sol:DeployScript --rpc-url $RPC_URL --p
 ```
 
 This will output the deployed addresses to the console and save them to the `script/config/Deploy.json` file.
+
+## Verification
+
+To verify the contract on sourcify - you will need to set the chain correctly and your deployed contract address.
+
+``` bash
+forge verify-contract --chain 33101 --verifier sourcify 0x7b038567a8CCfe6adcE0908Da0d46332eE9471aE src/KUSDUSDCSwap.sol:KUSDUSDCSwap
+```

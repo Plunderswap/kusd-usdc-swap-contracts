@@ -1,0 +1,29 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "src/KUSDUSDCSwap.sol": {
+      "urls": ["src/KUSDUSDCSwap.sol"]
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "metadata",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "abi",
+          "storageLayout"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true,
+      "bytecodeHash": "ipfs"
+    }
+  }
+} 
